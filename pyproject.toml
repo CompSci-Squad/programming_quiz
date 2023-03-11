@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "programming-quiz"
+version = "0.1.0"
+description = "Projeto Referente ao P.I do primeiro semestre de 2023"
+authors = ["do-ald533 <douglas.aldred533@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poe.tasks]
+dev = { cmd= "reloadium run src/main.py" }
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pygame = "^2.2.0"
+sqlalchemy = "^2.0.5.post1"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.2.2"
+
+[tool.poetry.group.dev.dependencies]
+reloadium = "^1.0.0"
+poethepoet = "^0.18.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
