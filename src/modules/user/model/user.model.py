@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Column, DateTime, Integer, String, Text
+from sqlalchemy import Column, DateTime, String, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 
@@ -22,8 +22,7 @@ class User(Base):
     bio = Column(Text)
     avatar_url = Column(Text)
     role = Column(String(255))
-    created_at = Column(DateTime, server_default=func.now())
-    updated_at = Column(DateTime, onupdate=func.now())
+    
 
     def __repr__(self):
         return "<User %r>" % self.username
