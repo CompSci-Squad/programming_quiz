@@ -15,9 +15,10 @@ class DefaultRepository(Generic[T]):
         self.__entity = entity
         self.__session = session
 
-    def create(self) -> None:
+    def create(self, **kwargs: 'EntityDict') -> None:
         try:
-            self.__session.add(self.__entity)
+            entity = self.__entity(**kwargs)
+            self.__session.add(entity)
             self.__session.commit()
         except IntegrityError as e:
             LOGGER.error(f"unexpected error when commiting entity {self.__entity}, error: {e}")
@@ -48,3 +49,5 @@ class DefaultRepository(Generic[T]):
         except IntegrityError as e:
             LOGGER.error(f"unexpected error when commiting entity, error: {e}")
             raise e
+
+EntityDict = TypedDict('EntityDict', {field.name: field.type for field in User.__dataclass_fields__.values()})
