@@ -23,6 +23,7 @@ pytest = "^7.2.2"
 [tool.poetry.group.dev.dependencies]
 reloadium = "^1.0.0"
 poethepoet = "^0.18.1"
+loguru = "^0.7.0"
 
 [build-system]
 requires = ["poetry-core"]
