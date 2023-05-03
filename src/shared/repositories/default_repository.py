@@ -1,11 +1,13 @@
-from typing import Any, Dict, Generic, Type, TypeVar
-from sqlalchemy import Table
+from typing import Any, Dict, Generic, Type, TypeVar, TypedDict
+from typing_extensions import Unpack
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, declarative_base
 
 from src.shared.logger.logger import LOGGER
 
-T = TypeVar("T", bound=Table)
+Base = declarative_base()
+
+T = TypeVar("T", bound=Base)
 
 
 class DefaultRepository(Generic[T]):
@@ -15,7 +17,7 @@ class DefaultRepository(Generic[T]):
         self.__entity = entity
         self.__session = session
 
-    def create(self, **kwargs: 'EntityDict') -> None:
+    def create(self, **kwargs: Unpack['EntityDict']) -> None:
         try:
             entity = self.__entity(**kwargs)
             self.__session.add(entity)
@@ -50,4 +52,5 @@ class DefaultRepository(Generic[T]):
             LOGGER.error(f"unexpected error when commiting entity, error: {e}")
             raise e
 
-EntityDict = TypedDict('EntityDict', {field.name: field.type for field in User.__dataclass_fields__.values()})
+EntityDict = TypedDict('EntityDict', {field.name: Any for field in T.__annotations__.values()}, total=False)
+
