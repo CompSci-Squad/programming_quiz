@@ -1,4 +1,4 @@
-from src.main import main
+from main import main
 
 def test_hello_world():
     assert main() == 'hello world'

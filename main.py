@@ -6,8 +6,9 @@ from src.modules.user.repository.user_repository import UserRepository
 def main():
     session = connect_to_database()
     if session is not None:
-        userRepo = UserRepository(session, UserEntity)
-        userRepo.create()   
+        userRepo = UserRepository(session)
+        user = UserEntity(username="teste", password="testando", email="teste@teste.com")
+        userRepo.create(user)
 
 
 
