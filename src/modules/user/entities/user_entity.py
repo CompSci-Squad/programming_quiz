@@ -3,6 +3,7 @@ from sqlalchemy import Column, String, Text
 
 from src.shared.entities.base_entity import BaseEntity
 
+
 class UserEntity(BaseEntity):
     __tablename__ = "user"
 
@@ -13,8 +14,15 @@ class UserEntity(BaseEntity):
     last_name = Column(String(255))
     role = Column(String(255))
 
-    def __init__(self, username: str, password: str, email: str, 
-                 first_name: Optional[str] = None, last_name: Optional[str] = None, role: Optional[str] = None):
+    def __init__(
+        self,
+        username: str,
+        password: str,
+        email: str,
+        first_name: Optional[str] = None,
+        last_name: Optional[str] = None,
+        role: Optional[str] = None,
+    ) -> None:
         self.username = username
         self.password = password
         self.email = email

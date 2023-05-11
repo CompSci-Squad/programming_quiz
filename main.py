@@ -7,8 +7,10 @@ def main():
     session = connect_to_database()
     if session is not None:
         userRepo = UserRepository(session)
-        user = UserEntity(username="teste", password="testando", email="teste@teste.com")
-        userRepo.create(user)
+        user = userRepo.create(username="henrique", password="testando", email="testando")
+        userRepo.update(str(user.id), email="urubuDoPix")
+
+        
 
 
 
