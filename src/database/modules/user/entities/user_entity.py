@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, ForeignKey
 
 from src.shared.entities.base_entity import BaseEntity
 
@@ -10,6 +10,7 @@ class UserEntity(BaseEntity):
     name = Column(String(255), nullable=False)
     ra = Column(String(10), nullable=False, unique=True)
     coins = Column(Integer, nullable=False, default=0)
+    current_phase_id = Column(ForeignKey("phase.id"))
 
     def __init__(
         self,
