@@ -1,4 +1,3 @@
-from typing import Any, Dict
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.sql import func
