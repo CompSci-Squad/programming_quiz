@@ -1,7 +1,8 @@
 from sqlalchemy.orm.session import Session
-from typing import List, Optional, Type, Dict, TypedDict, Union
-from src.database.modules.user.entities.user_entity import UserEntity
+from typing import List, Dict, Union, Literal
+from ..entities import UserEntity
 from src.shared.logger.logger import LOGGER
+from ..dtos import CreateUserDto, UpdateUserDto
 
 
 class UserRepository:
@@ -10,17 +11,17 @@ class UserRepository:
     def __init__(self, session: Session):
         self.__session = session
 
-    def create(
-        self,
-        username: str,
-        password: str,
-        email: str,
-        first_name: Optional[str] = None,
-        last_name: Optional[str] = None,
-        role: Optional[str] = None,
-    ) -> Union[UserEntity, None]:
+    def create(self, userPayload: CreateUserDto) -> Union[UserEntity, None]:
         try:
-            entity = UserEntity(username, password, email, first_name, last_name, role)
+            email, password, name, ra, coins, current_phase_id = userPayload.values()
+            entity = UserEntity(
+                email=email,
+                password=password,
+                name=name,
+                ra=ra,
+                coins=coins,
+                current_phase_id=current_phase_id,
+            )
             self.__session.add(entity)
             self.__session.commit()
             self.__session.refresh(entity)
@@ -28,33 +29,34 @@ class UserRepository:
         except:
             LOGGER.error("error on creating a user")
 
-    def update(
-        self,
-        id: str,
-        username: Optional[str] = None,
-        password: Optional[str] = None,
-        email: Optional[str] = None,
-        first_name: Optional[str] = None,
-        last_name: Optional[str] = None,
-        role: Optional[str] = None,
-    ) -> Union[UserEntity, None]:
+    def update(self, updateUserDto: UpdateUserDto) -> Union[UserEntity, None]:
         try:
+            (
+                id,
+                email,
+                password,
+                name,
+                ra,
+                coins,
+                current_phase_id,
+            ) = updateUserDto.values()
             user = self.get_by_id(id)
             if user is None:
                 LOGGER.error(f"no user found with {id}")
                 raise ValueError()
-            if username:
-                user.username = username
-            if password:
-                user.password = password
-            if email:
+
+            if email is not None:
                 user.email = email
-            if first_name:
-                user.first_name = first_name
-            if last_name:
-                user.last_name = last_name
-            if role:
-                user.role = role
+            if password is not None:
+                user.password = password
+            if name is not None:
+                user.name = name
+            if ra is not None:
+                user.ra = ra
+            if coins is not None:
+                user.coins = coins
+            if current_phase_id is not None:
+                user.current_phase_id = current_phase_id
 
             self.__session.commit()
             self.__session.refresh(user)
@@ -62,12 +64,38 @@ class UserRepository:
         except:
             LOGGER.error("erro no update")
 
-    def delete(self, entity: UserEntity):
-        self.__session.delete(entity)
-        self.__session.commit()
+    def delete(self, id: str) -> None:
+        try:
+            entity = self.get_by_id(id)
+            if not entity:
+                raise ValueError("entity not found")
+            self.__session.delete(entity)
+            self.__session.commit()
+        except:
+            LOGGER.error("erro no delete")
 
     def get_all(self) -> List[UserEntity]:
         return self.__session.query(UserEntity).all()
 
     def get_by_id(self, id: str) -> Union[UserEntity, None]:
         return self.__session.query(UserEntity).get(id)
+
+    def find_user(
+        self, kwargs: Dict[Literal["name", "email", "ra"], str]
+    ) -> Union[UserEntity, None]:
+        return self.__session.query(UserEntity).filter_by(**kwargs).first()
+
+    def add_coin(self, id: str, coins: int) -> Union[UserEntity, None]:
+        try:
+            user = self.get_by_id(id)
+            if user is None:
+                LOGGER.error(f"no user found with {id}")
+                raise ValueError()
+
+            user.coins = coins
+
+            self.__session.commit()
+            self.__session.refresh()
+            return user
+        except:
+            LOGGER.error("erro no update das moedas")

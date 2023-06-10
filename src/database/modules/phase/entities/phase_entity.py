@@ -13,4 +13,3 @@ class PhaseEntity(BaseEntity):
         name: str,
     ) -> None:
         self.name = name
-        
