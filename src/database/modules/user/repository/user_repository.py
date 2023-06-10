@@ -13,21 +13,21 @@ class UserRepository:
 
     def create(self, userPayload: CreateUserDto) -> Union[UserEntity, None]:
         try:
-            email, password, name, ra, coins, current_phase_id = userPayload.values()
+            email, password, name, ra, coins = userPayload.values()
             entity = UserEntity(
                 email=email,
                 password=password,
                 name=name,
                 ra=ra,
                 coins=coins,
-                current_phase_id=current_phase_id,
             )
             self.__session.add(entity)
             self.__session.commit()
             self.__session.refresh(entity)
             return entity
-        except:
+        except Exception:
             LOGGER.error("error on creating a user")
+            raise Exception
 
     def update(self, updateUserDto: UpdateUserDto) -> Union[UserEntity, None]:
         try:

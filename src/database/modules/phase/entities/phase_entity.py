@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String
+from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.shared.entities.base_entity import BaseEntity

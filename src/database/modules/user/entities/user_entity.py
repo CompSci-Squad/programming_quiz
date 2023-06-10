@@ -1,5 +1,5 @@
 from typing import Optional
-from sqlalchemy import String, Integer, ForeignKey
+from sqlalchemy import String, Integer
 from sqlalchemy.orm import mapped_column, Mapped
 
 from src.shared.entities.base_entity import BaseEntity
@@ -7,12 +7,12 @@ from src.shared.entities.base_entity import BaseEntity
 
 class UserEntity(BaseEntity):
     __tablename__ = "user"
-    __email: Mapped[str] = mapped_column(String(18), unique=True, nullable=False)
-    __password: Mapped[str] = mapped_column(String(15), nullable=False)
-    __name: Mapped[str] = mapped_column(String(255), nullable=False)
-    __ra: Mapped[str] = mapped_column(String(10), nullable=False, unique=True)
-    __coins: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    __current_phase_id: Mapped[Optional[str]] = mapped_column(ForeignKey("phase.id"))
+    email: Mapped[str] = mapped_column(String(18), unique=True, nullable=False)
+    password: Mapped[str] = mapped_column(String(15), nullable=False)
+    name: Mapped[str] = mapped_column(String(50), nullable=False)
+    ra: Mapped[str] = mapped_column(String(10), nullable=False, unique=True)
+    coins: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    # __current_phase_id: Mapped[Optional[str]] = mapped_column(ForeignKey("phase.id"))
 
     def __init__(
         self,
@@ -21,60 +21,51 @@ class UserEntity(BaseEntity):
         name: str,
         ra: str,
         coins: int,
-        current_phase_id: Optional[str]
     ) -> None:
-        self.__email = email
-        self.__name = name
-        self.__password = password
-        self.__ra = ra
-        self.__coins = coins
-        self.__current_phase_id = current_phase_id
+        self.email = email
+        self.name = name
+        self.password = password
+        self.ra = ra
+        self.coins = coins
+        # self.__current_phase_id = current_phase_id
 
-    # getter/setter methods
+    """ # getter/setter methods
     @property
     def name(self):
-        return self.__name
+        return self.name
 
     @name.setter
     def name(self, value):
-        self.__name = value
+        self.name = value
 
     @property
     def email(self):
-        return self.__email
+        return self.email
 
     @email.setter
-    def email(self, value):
-        self.__email = value
+    def email(self, value: str):
+        self.email = value
 
     @property
     def password(self):
-        return self.__password
+        return self.password
 
     @password.setter
-    def password(self, value):
-        self.__password = value
+    def password(self, value: str):
+        self.password = value
 
     @property
     def ra(self):
-        return self.__ra
+        return self.ra
 
     @ra.setter
-    def ra(self, value):
-        self.__ra = value
+    def ra(self, value: str):
+        self.ra = value
 
     @property
     def coins(self):
-        return self.__coins
+        return self.coins
 
     @coins.setter
     def coins(self, value):
-        self.__coins = value
-    
-    @property
-    def current_phase_id(self):
-        return self.__current_phase_id
-    
-    @current_phase_id.setter
-    def current_phase_id(self, value):
-        self.__current_phase_id = value
+        self.coins = value """

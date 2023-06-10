@@ -7,7 +7,7 @@ def main():
     session = connect_to_database()
     teste = UserRepository(session)
 
-    teste.create()
+    teste.create({'email': 'teste@example.com', 'password': 'test', 'name': 'douglas', 'ra': '23.00375-8', 'coins': 5})
 
 
 if __name__ == "__main__":
