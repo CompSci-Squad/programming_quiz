@@ -6,4 +6,4 @@ class CreateUserDto(TypedDict):
     name: str
     ra: str
     coins: Optional[int]
-    current_phase_id: Optional[str]
+    current_level_id: Optional[str]

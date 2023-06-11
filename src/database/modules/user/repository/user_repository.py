@@ -1,9 +1,10 @@
 from sqlalchemy.orm.session import Session
 from typing import List, Dict, Union, Literal
-from ..entities import UserEntity
 from src.shared.logger.logger import LOGGER
-from ..dtos import CreateUserDto, UpdateUserDto
 
+from src.database.modules.user.entities.user_entity import UserEntity
+from src.database.modules.user.dtos.create_user_dto import CreateUserDto
+from src.database.modules.user.dtos.update_user_dto import UpdateUserDto
 
 class UserRepository:
     __session: Session
@@ -13,13 +14,14 @@ class UserRepository:
 
     def create(self, userPayload: CreateUserDto) -> Union[UserEntity, None]:
         try:
-            email, password, name, ra, coins = userPayload.values()
+            email, password, name, ra, coins, current_level_id = userPayload.values()
             entity = UserEntity(
                 email=email,
                 password=password,
                 name=name,
                 ra=ra,
                 coins=coins,
+                current_level_id=current_level_id
             )
             self.__session.add(entity)
             self.__session.commit()
