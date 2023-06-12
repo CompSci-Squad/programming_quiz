@@ -9,7 +9,7 @@ def main():
     session = connect_to_database()
     test_level = LevelRepository(session)
     test_user = UserRepository(session)
-    level = test_level.create(
+    """ level = test_level.create(
         {
             "question": "o que e classificacao vocal?",
             "right_answer": "tipo de voz do cantor",
@@ -28,10 +28,15 @@ def main():
             "password": "batataFrita123",
             "current_level_id": level.id,
             "name": "nathalia",
-            "ra": "23.00375--8",
+            "ra": "23.00375-8",
             "coins": 0,
         }
-    )
+    ) """
+
+    # print(test_user.get_all())
+    # print(test_user.get_by_id('990bcaa37513489784c0db6ac3508498'))
+    print(test_user.find_user('ra', '23.00375-8'))
+    # test_user.update({"id": user_found.id, 'email': 'test@example.com'})
 
 
 if __name__ == "__main__":

@@ -1,13 +1,13 @@
-from typing import List
+from __future__ import annotations
+from typing import List, TYPE_CHECKING
 
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 from sqlalchemy import String, Integer
-from sqlalchemy.ext.declarative import declarative_base
+from src.shared.entities.base_entity import Base
 
-from src.database.modules.user.entities.user_entity import UserEntity
+if TYPE_CHECKING:
+    from src.database.modules.user.entities.user_entity import UserEntity
 
-
-Base = declarative_base()
 
 
 class LevelEntity(Base):
@@ -21,13 +21,23 @@ class LevelEntity(Base):
         String(80), name="right_answer", nullable=False
     )
     __reward: Mapped[int] = mapped_column(Integer, name="reward", nullable=False)
-    __wrong_answer_1: Mapped[str] = mapped_column(String(80), name="wrong_answer_1", nullable=False)
+    __wrong_answer_1: Mapped[str] = mapped_column(
+        String(80), name="wrong_answer_1", nullable=False
+    )
     __wrong_answer_2 = mapped_column(String(80), name="wrong_answer_2", nullable=False)
     __wrong_answer_3 = mapped_column(String(80), name="wrong_answer_3", nullable=False)
-    
-    users: Mapped[List[UserEntity]] = relationship(back_populates='level')
 
-    def __init__(self, question: str, right_answer: str, reward: int, wrong_answer_1: str, wrong_answer_2: str, wrong_answer_3: str):
+    users: Mapped[List[UserEntity]] = relationship(back_populates="level")
+
+    def __init__(
+        self,
+        question: str,
+        right_answer: str,
+        reward: int,
+        wrong_answer_1: str,
+        wrong_answer_2: str,
+        wrong_answer_3: str,
+    ):
         self.__question = question
         self.__right_answer = right_answer
         self.__reward = reward
@@ -66,15 +76,15 @@ class LevelEntity(Base):
     @property
     def wrong_answer_1(self):
         return self.__wrong_answer_1
-    
+
     @wrong_answer_1.setter
     def wrong_answer_1(self, value):
         self.__wrong_answer_1 = value
-    
+
     @property
     def wrong_answer_2(self):
         return self.__wrong_answer_2
-    
+
     @wrong_answer_2.setter
     def wrong_answer_2(self, value):
         self.__wrong_answer_2 = value
@@ -82,7 +92,7 @@ class LevelEntity(Base):
     @property
     def wrong_answer_3(self):
         return self.__wrong_answer_3
-    
+
     @wrong_answer_3.setter
     def wrong_answer_3(self, value):
         self.__wrong_answer_3 = value

@@ -7,4 +7,4 @@ class UpdateUserDto(TypedDict):
     name: Optional[str]
     ra: Optional[str]
     coins: Optional[int]
-    current_phase_id: Optional[str]
+    current_level_id: Optional[str]

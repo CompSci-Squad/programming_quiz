@@ -1,26 +1,35 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
 from uuid import uuid4
 from sqlalchemy import ForeignKey, String, Integer
-from sqlalchemy.orm import mapped_column, Mapped, relationship
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import mapped_column, MappedColumn, relationship
+from src.shared.entities.base_entity import Base
 
-from src.database.modules.level.entities.level_entity import LevelEntity
-
-Base = declarative_base()
+if TYPE_CHECKING:
+    from src.database.modules.level.entities.level_entity import LevelEntity
 
 
 class UserEntity(Base):
     __tablename__ = "users"
-    __id: Mapped[str] = mapped_column(
-        String(32), name="id",primary_key=True, default=lambda: uuid4().hex, index=True
+    __id: MappedColumn[str] = mapped_column(
+        String(32), name="id", primary_key=True, default=lambda: uuid4().hex, index=True
     )
-    __email: Mapped[str] = mapped_column(String(50), unique=True, name="email", nullable=False
+    __email: MappedColumn[str] = mapped_column(
+        String(50), unique=True, index=True, name="email", nullable=False
     )
-    __password: Mapped[str] = mapped_column(String(15), name="password",nullable=False)
-    __name: Mapped[str] = mapped_column(String(50), name="name",nullable=False)
-    __ra: Mapped[str] = mapped_column(String(10), name="ra", nullable=False, unique=True)
-    __coins: Mapped[int] = mapped_column(Integer, name="coins", nullable=False, default=0)
-    __current_level_id: Mapped[int] = mapped_column(ForeignKey("level.id"), name="current_level_id")
-    level: Mapped[LevelEntity] = relationship(back_populates="users")
+    __password: MappedColumn[str] = mapped_column(String(15), name="password", nullable=False)
+    __name: MappedColumn[str] = mapped_column(String(50), name="name", nullable=False)
+    __ra: MappedColumn[str] = mapped_column(
+        String(10), name="ra", index=True, nullable=False, unique=True
+    )
+    __coins: MappedColumn[int] = mapped_column(
+        Integer, name="coins", nullable=False, default=0
+    )
+    __current_level_id: MappedColumn[int] = mapped_column(
+        ForeignKey("level.id"), name="current_level_id"
+    )
+    level: MappedColumn[LevelEntity] = relationship(back_populates="users")
 
     def __init__(
         self,
@@ -37,6 +46,9 @@ class UserEntity(Base):
         self.ra = ra
         self.coins = coins
         self.__current_level_id = current_level_id
+
+    def __str__(self) -> str:
+        return f"UserEntity(id={self.id}, email={self.email}, password={self.password}, name={self.name}, ra={self.ra}, coins={self.coins}, current_level_id={self.current_level_id})"
 
     # getter/setter methods
     @property

@@ -15,14 +15,13 @@ class LevelRepository:
 
     def create(self, levelPayload: CreateLevelDto) -> LevelEntity:
         try:
-            question, right_answer, reward, wrong_answer = levelPayload.values()
             entity = LevelEntity(
-                question,
-                right_answer,
-                reward,
-                wrong_answer_1=wrong_answer[0],
-                wrong_answer_2=wrong_answer[1],
-                wrong_answer_3=wrong_answer[2],
+                question=levelPayload["question"],
+                right_answer=levelPayload["right_answer"],
+                reward=levelPayload["reward"],
+                wrong_answer_1=levelPayload["wrong_answer"][0],
+                wrong_answer_2=levelPayload["wrong_answer"][1],
+                wrong_answer_3=levelPayload["wrong_answer"][2],
             )
 
             self.__session.add(entity)
