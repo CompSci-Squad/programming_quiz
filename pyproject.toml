@@ -9,6 +9,7 @@ readme = "README.md"
 [tool.poe.tasks]
 dev = { cmd= "reloadium run src/main.py" }
 start = { script = "main:main"}
+config = {  script = "config_database:main"}
 
 [tool.poetry.dependencies]
 python = "^3.10"

@@ -8,8 +8,6 @@ from src.shared.entities.base_entity import Base
 if TYPE_CHECKING:
     from src.database.modules.user.entities.user_entity import UserEntity
 
-
-
 class LevelEntity(Base):
     __tablename__ = "level"
 
@@ -24,8 +22,8 @@ class LevelEntity(Base):
     __wrong_answer_1: Mapped[str] = mapped_column(
         String(80), name="wrong_answer_1", nullable=False
     )
-    __wrong_answer_2 = mapped_column(String(80), name="wrong_answer_2", nullable=False)
-    __wrong_answer_3 = mapped_column(String(80), name="wrong_answer_3", nullable=False)
+    __wrong_answer_2: Mapped[str] = mapped_column(String(80), name="wrong_answer_2", nullable=False)
+    __wrong_answer_3: Mapped[str] = mapped_column(String(80), name="wrong_answer_3", nullable=False)
 
     users: Mapped[List[UserEntity]] = relationship(back_populates="level")
 
@@ -54,7 +52,7 @@ class LevelEntity(Base):
         return self.__right_answer
 
     @right_answer.setter
-    def right_answer(self, value):
+    def right_answer(self, value: str):
         self.__right_answer = value
 
     @property
@@ -62,7 +60,7 @@ class LevelEntity(Base):
         return self.__reward
 
     @reward.setter
-    def reward(self, value):
+    def reward(self, value: int):
         self.__reward = value
 
     @property
@@ -70,7 +68,7 @@ class LevelEntity(Base):
         return self.__question
 
     @question.setter
-    def question(self, value):
+    def question(self, value: str):
         self.__question = value
 
     @property
@@ -78,7 +76,7 @@ class LevelEntity(Base):
         return self.__wrong_answer_1
 
     @wrong_answer_1.setter
-    def wrong_answer_1(self, value):
+    def wrong_answer_1(self, value: str):
         self.__wrong_answer_1 = value
 
     @property
@@ -86,7 +84,7 @@ class LevelEntity(Base):
         return self.__wrong_answer_2
 
     @wrong_answer_2.setter
-    def wrong_answer_2(self, value):
+    def wrong_answer_2(self, value: str):
         self.__wrong_answer_2 = value
 
     @property
@@ -94,5 +92,5 @@ class LevelEntity(Base):
         return self.__wrong_answer_3
 
     @wrong_answer_3.setter
-    def wrong_answer_3(self, value):
+    def wrong_answer_3(self, value: str):
         self.__wrong_answer_3 = value
