@@ -12,13 +12,13 @@ altura_tela = 800
 tela = pygame.display.set_mode((largura_tela, altura_tela))
 pygame.display.set_caption("PythonQuiz")
 
-imagem_moeda = pygame.image.load("moeda.png")
+imagem_moeda = pygame.image.load("public\moeda.png")
 imagem_moeda = pygame.transform.scale(imagem_moeda, (30, 30))
 
-logo = pygame.image.load("logo.png") 
+logo = pygame.image.load("public\logo.png") 
 logo = pygame.transform.scale(logo, (300, 305))
 
-imagem_moeda1 = pygame.image.load("moeda1.png")
+imagem_moeda1 = pygame.image.load("public\moeda1.png")
 imagem_moeda1 = pygame.transform.scale(imagem_moeda1, (45, 50))
 
 # Classe para representar uma pergunta
