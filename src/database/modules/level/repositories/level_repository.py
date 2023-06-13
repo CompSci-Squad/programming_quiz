@@ -1,5 +1,5 @@
 from sqlalchemy.orm.session import Session
-from typing import Union
+from typing import Union, List
 from src.shared.logger.logger import LOGGER
 
 from src.database.modules.level.entities.level_entity import LevelEntity
@@ -76,3 +76,6 @@ class LevelRepository:
 
     def get_by_id(self, id: str) -> Union[LevelEntity, None]:
         return self.__session.query(LevelEntity).get(id)
+    
+    def get_all(self) -> List[LevelEntity]:
+        return self.__session.query(LevelEntity).all()
