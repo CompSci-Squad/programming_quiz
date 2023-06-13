@@ -137,9 +137,6 @@ def exibir_mensagem(mensagem):
 # Função principal do jogo
 def jogo():
     global pergunta_atual, moedas
-    
-    # Embaralha a lista de perguntas
-    random.shuffle(perguntas)
 
     for pergunta in perguntas:
         pergunta_atual = pergunta
