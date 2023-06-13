@@ -20,12 +20,12 @@ def upgrade() -> None:
     op.create_table(
         'level',
         sa.Column('id', sa.Integer, autoincrement=True, primary_key=True),
-        sa.Column('question', sa.String(80), nullable=False),
-        sa.Column('right_answer', sa.String(80), nullable=False),
+        sa.Column('question', sa.String(250), nullable=False),
+        sa.Column('right_answer', sa.String(250), nullable=False),
         sa.Column('reward', sa.Integer, nullable=False),
-        sa.Column('wrong_answer_1', sa.String(80), nullable=False),
-        sa.Column('wrong_answer_2', sa.String(80), nullable=False),
-        sa.Column('wrong_answer_3', sa.String(80), nullable=False)
+        sa.Column('wrong_answer_1', sa.String(250), nullable=False),
+        sa.Column('wrong_answer_2', sa.String(250), nullable=False),
+        sa.Column('wrong_answer_3', sa.String(250), nullable=False)
     )
 
 
