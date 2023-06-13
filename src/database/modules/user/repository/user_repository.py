@@ -84,15 +84,11 @@ class UserRepository:
     def find_user(
         self, attribute: Literal["email", "ra"], value: str
     ) -> Union[UserEntity, None]:
-        valid_user = 'not found'
+        valid_user = None
         users = self.get_all()
         for user in users:
             if getattr(user, attribute) == value:
                 valid_user = user
-
-        if valid_user == 'not found':
-            LOGGER.info('user not found')
-            return 0
         
         return valid_user
 

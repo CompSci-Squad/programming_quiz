@@ -5,9 +5,9 @@ from src.database.modules.level.repositories.level_repository import LevelReposi
 
 pygame.init()
 
-from .colors import AMARELO, AZUL, BRANCO
-from .images import COIN_IMAGE, COIN_IMAGE_1, LOGO
-from .constants import SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN
+from ....shared.constants.colors import YELLOW, BLUE, BRANCO
+from ....shared.images.images import COIN_IMAGE, COIN_IMAGE_1, LOGO
+from ....shared.constants.constants import SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN
 
 pygame.display.set_caption("PythonQuiz")
 
@@ -20,7 +20,7 @@ def verify_answer(right_answer: str, selected_answer: str):
 
 # Função para exibir uma pergunta na SCREEN
 def exibir_pergunta(alternativas: List[str], question: str, id: int):
-    SCREEN.fill(AZUL)
+    SCREEN.fill(BLUE)
 
     fonte = pygame.font.Font(None, 30)
 
@@ -36,7 +36,7 @@ def exibir_pergunta(alternativas: List[str], question: str, id: int):
         y += 50
 
     # Exibe a quantidade de moedas
-    texto_moedas = fonte.render("Moedas: " + str(moedas), True, AMARELO)
+    texto_moedas = fonte.render("Moedas: " + str(moedas), True, YELLOW)
     SCREEN.blit(texto_moedas, (100, 500))
 
     # Exibe a imagem da moeda
@@ -48,8 +48,8 @@ def exibir_pergunta(alternativas: List[str], question: str, id: int):
 
     # Exibe o botão de pular pergunta
 
-    pygame.draw.rect(SCREEN, AMARELO, (700, 480, 150, 50))
-    texto_pular = fonte.render("Pular - 150", True, AZUL)
+    pygame.draw.rect(SCREEN, YELLOW, (700, 480, 150, 50))
+    texto_pular = fonte.render("Pular - 150", True, BLUE)
     SCREEN.blit(texto_pular, (725, 500))
 
     pygame.display.flip()
@@ -57,7 +57,7 @@ def exibir_pergunta(alternativas: List[str], question: str, id: int):
 
 # Função para exibir uma mensagem na SCREEN
 def exibir_mensagem(mensagem: str):
-    SCREEN.fill(AZUL)
+    SCREEN.fill(BLUE)
 
     fonte = pygame.font.Font(None, 50)
 
