@@ -8,7 +8,6 @@ from src.modules.screens.user_screen.user_screen import user_screen
 from src.shared.enums.game_state_enum import GameState
 
 
-
 def main():
     pygame.init()
     gameState = GameState.USER
@@ -24,12 +23,11 @@ def main():
                 user = user_screen(userRepository)
                 if user:
                     gameState = GameState.GAME
-            
-            if gameState == GameState.GAME:
-                jogo(levelRepository, user)
-        
-            pygame.display.flip()
 
+            if gameState == GameState.GAME:
+                jogo(levelRepository, user, userRepository)
+
+            pygame.display.flip()
 
 
 if __name__ == "__main__":

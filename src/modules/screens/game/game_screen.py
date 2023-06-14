@@ -2,6 +2,7 @@ import pygame
 import random
 from typing import Tuple, List
 from src.database.modules.level.repositories.level_repository import LevelRepository
+from src.database.modules.user.repository.user_repository import UserRepository
 from src.database.modules.user.entities.user_entity import UserEntity
 
 from src.shared.constants.colors import YELLOW, BLUE, BRANCO
@@ -12,7 +13,6 @@ pygame.display.set_caption("PythonQuiz")
 
 # Variáveis de estado do jogo
 pergunta_atual = None
-moedas = 0
 
 def verify_answer(right_answer: str, selected_answer: str):
     return right_answer == selected_answer
@@ -80,8 +80,9 @@ def verificar_clique(posicao_mouse: Tuple[int, int], alternativas: List[str]) ->
     return ''
 
 # Função principal do jogo
-def jogo(levelRepository: LevelRepository, user: UserEntity):
+def jogo(levelRepository: LevelRepository, user: UserEntity, userRepository: UserRepository):
     global pergunta_atual, moedas
+    moedas = 0
     levels = levelRepository.get_all()
 
     for level in levels:
@@ -125,5 +126,6 @@ def jogo(levelRepository: LevelRepository, user: UserEntity):
         else:
             exibir_mensagem("Resposta incorreta!")
 
+    userRepository.add_coin(user.id, moedas)
     exibir_mensagem("Fim do jogo. Você conseguiu " + str(moedas) + " moedas!")
 
