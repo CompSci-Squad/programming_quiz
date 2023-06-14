@@ -6,17 +6,8 @@ from src.shared.constants.images import LOGO
 from src.shared.constants.colors import BLACK, BLUE, YELLOW
 from src.shared.constants.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN
 from src.shared.enums.field_enum import FieldEnum
-from src.database.modules.user.entities.user_entity import UserEntity
 from src.database.modules.user.repository.user_repository import UserRepository
 from src.database.modules.user.dtos.create_user_dto import CreateUserDto
-
-# Inicialização do Pygame
-pygame.init()
-
-# Definição de cores
-
-# Definição das dimensões da janela
-
 # Inicialização da janela
 pygame.display.set_caption("Cadastro e Login")
 
@@ -34,10 +25,10 @@ def exibir_mensagem(mensagem, cor, y_offset=0):
 # Função para cadastrar um usuário
 def cadastrar(createUserPayload: CreateUserDto, userRepository: UserRepository):
     if userRepository.find_user("ra", createUserPayload["ra"]):
-        return False
+        return None
     else:
-        userRepository.create(createUserPayload)
-        return True
+        user = userRepository.create(createUserPayload)
+        return user
 
 
 # Função para fazer login
@@ -47,9 +38,9 @@ def login(login_user_dict, userRepository: UserRepository):
         user.ra == login_user_dict["ra"]
         and user.password == login_user_dict["password"]
     ):
-        return True  # Login bem-sucedido
+        return user # Login bem-sucedido
     else:
-        return False  # Login falhou
+        return None  # Login falhou
 
 
 # Função principal
@@ -75,7 +66,6 @@ def user_screen(userRepository: UserRepository):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 executando = False
-
             if tela_atual == "inicio":
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if (
@@ -256,8 +246,11 @@ def user_screen(userRepository: UserRepository):
                     <= pygame.mouse.get_pos()[1]
                     <= SCREEN_HEIGHT - 100
                 ):
-                    if cadastrar(user_dict, userRepository):
+                    user = cadastrar(user_dict, userRepository)
+                    if user is not None:
                         exibir_mensagem("Cadastro bem-sucedido", BLACK, 160)
+                        executando = False
+                        return user
                     else:
                         exibir_mensagem("RA já existe", BLACK, 160)
                     user_dict["ra"] = ""
@@ -314,7 +307,6 @@ def user_screen(userRepository: UserRepository):
                 tela_atual = "inicio"
 
             if pygame.mouse.get_pressed()[0]:
-                print(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
                 if (
                     SCREEN_WIDTH // 2 - 100
                     <= pygame.mouse.get_pos()[0]
@@ -323,9 +315,11 @@ def user_screen(userRepository: UserRepository):
                     <= pygame.mouse.get_pos()[1]
                     <= SCREEN_HEIGHT - 100
                 ):
-                    if login(login_user_dict, userRepository):
-                        print('deu certo')
+                    user = login(login_user_dict, userRepository)
+                    if user is not None:
                         exibir_mensagem("Login bem-sucedido", BLACK, 160)
+                        executando = False
+                        return user
                     else:
                         exibir_mensagem("Login falhou", BLACK, 160)
                     login_user_dict["ra"] = ""

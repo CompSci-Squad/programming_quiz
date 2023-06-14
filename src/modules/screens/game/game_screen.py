@@ -2,12 +2,11 @@ import pygame
 import random
 from typing import Tuple, List
 from src.database.modules.level.repositories.level_repository import LevelRepository
+from src.database.modules.user.entities.user_entity import UserEntity
 
-pygame.init()
-
-from ....shared.constants.colors import YELLOW, BLUE, BRANCO
-from ....shared.images.images import COIN_IMAGE, COIN_IMAGE_1, LOGO
-from ....shared.constants.constants import SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN
+from src.shared.constants.colors import YELLOW, BLUE, BRANCO
+from src.shared.constants.images import COIN_IMAGE, COIN_IMAGE_1, LOGO
+from src.shared.constants.constants import SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN
 
 pygame.display.set_caption("PythonQuiz")
 
@@ -81,7 +80,7 @@ def verificar_clique(posicao_mouse: Tuple[int, int], alternativas: List[str]) ->
     return ''
 
 # Função principal do jogo
-def jogo(levelRepository: LevelRepository):
+def jogo(levelRepository: LevelRepository, user: UserEntity):
     global pergunta_atual, moedas
     levels = levelRepository.get_all()
 
