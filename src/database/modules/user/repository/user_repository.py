@@ -103,7 +103,7 @@ class UserRepository:
             user.coins = coins
 
             self.__session.commit()
-            self.__session.refresh()
+            self.__session.refresh(user)
             return user
         except:
             LOGGER.error("erro no update das moedas")
