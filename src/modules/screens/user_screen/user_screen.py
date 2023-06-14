@@ -4,7 +4,7 @@
 import pygame
 from src.shared.constants.images import LOGO
 from src.shared.constants.colors import BLACK, BLUE, YELLOW
-from src.shared.constants.constants import SCREEN_WIDTH, SCREEN_HEIGHT
+from src.shared.constants.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN
 from src.shared.enums.field_enum import FieldEnum
 from src.database.modules.user.entities.user_entity import UserEntity
 from src.database.modules.user.repository.user_repository import UserRepository
@@ -18,7 +18,6 @@ pygame.init()
 # Definição das dimensões da janela
 
 # Inicialização da janela
-window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Cadastro e Login")
 
 
@@ -29,12 +28,11 @@ def exibir_mensagem(mensagem, cor, y_offset=0):
     texto_retangulo = texto.get_rect(
         center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + y_offset)
     )
-    window.blit(texto, texto_retangulo)
+    SCREEN.blit(texto, texto_retangulo)
 
 
 # Função para cadastrar um usuário
 def cadastrar(createUserPayload: CreateUserDto, userRepository: UserRepository):
-    print(userRepository.find_user("ra", createUserPayload["ra"]))
     if userRepository.find_user("ra", createUserPayload["ra"]):
         return False
     else:
@@ -69,10 +67,6 @@ def user_screen(userRepository: UserRepository):
     executando = True
     tela_atual = "inicio"  # Pode ser "inicio", "cadastro" ou "login"
     tela_anterior = "inicio"
-    campo_email = ""
-    campo_ra = ""
-    campo_nome = ""
-    campo_senha = ""
     campo_selecionado: FieldEnum = (
         FieldEnum.RA
     )  # Pode ser "ra", "nome", "senha" ou "email"
@@ -173,13 +167,13 @@ def user_screen(userRepository: UserRepository):
                         ):
                             login_user_dict["password"] += event.unicode
 
-        window.fill(BLUE)
-        window.blit(LOGO, (625, 25))
+        SCREEN.fill(BLUE)
+        SCREEN.blit(LOGO, (625, 25))
 
         if tela_atual == "inicio":
             # Botão de cadastro
             pygame.draw.rect(
-                window,
+                SCREEN,
                 YELLOW,
                 (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 - 60, 200, 40),
             )
@@ -187,7 +181,7 @@ def user_screen(userRepository: UserRepository):
 
             # Botão de login
             pygame.draw.rect(
-                window,
+                SCREEN,
                 YELLOW,
                 (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 20, 200, 40),
             )
@@ -201,39 +195,39 @@ def user_screen(userRepository: UserRepository):
 
             if campo_selecionado == FieldEnum.RA:
                 pygame.draw.rect(
-                    window,
+                    SCREEN,
                     YELLOW,
                     (SCREEN_WIDTH // 2 - 150, SCREEN_HEIGHT // 2 - 60, 300, 40),
                     2,
                 )
             elif campo_selecionado == FieldEnum.NOME:
                 pygame.draw.rect(
-                    window,
+                    SCREEN,
                     YELLOW,
                     (SCREEN_WIDTH // 2 - 150, SCREEN_HEIGHT // 2 - 30, 300, 40),
                     2,
                 )
             elif campo_selecionado == FieldEnum.EMAIL:
                 pygame.draw.rect(
-                    window,
+                    SCREEN,
                     YELLOW,
                     (SCREEN_WIDTH // 2 - 150, SCREEN_HEIGHT // 2, 300, 30),
                     2,
                 )
             elif campo_selecionado == FieldEnum.SENHA:
                 pygame.draw.rect(
-                    window,
+                    SCREEN,
                     YELLOW,
                     (SCREEN_WIDTH // 2 - 150, SCREEN_HEIGHT // 2 + 40, 300, 40),
                     2,
                 )
 
             pygame.draw.rect(
-                window, YELLOW, (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT - 160, 200, 40)
+                SCREEN, YELLOW, (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT - 160, 200, 40)
             )
             exibir_mensagem("CADASTRAR", BLACK, 260)
             pygame.draw.rect(
-                window, YELLOW, (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT - 100, 200, 40)
+                SCREEN, YELLOW, (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT - 100, 200, 40)
             )
             exibir_mensagem("ARRASTE PARA VOLTAR", BLACK, 320)
             if (
@@ -245,7 +239,7 @@ def user_screen(userRepository: UserRepository):
                 <= SCREEN_HEIGHT - 60
             ):
                 pygame.draw.rect(
-                    window,
+                    SCREEN,
                     BLACK,
                     (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT - 100, 200, 40),
                     2,
@@ -258,11 +252,10 @@ def user_screen(userRepository: UserRepository):
                     SCREEN_WIDTH // 2 - 100
                     <= pygame.mouse.get_pos()[0]
                     <= SCREEN_WIDTH // 2 + 100
-                    and SCREEN_HEIGHT - 100
+                    and SCREEN_HEIGHT - 200
                     <= pygame.mouse.get_pos()[1]
-                    <= SCREEN_HEIGHT - 60
+                    <= SCREEN_HEIGHT - 100
                 ):
-                    print(user_dict)
                     if cadastrar(user_dict, userRepository):
                         exibir_mensagem("Cadastro bem-sucedido", BLACK, 160)
                     else:
@@ -278,7 +271,7 @@ def user_screen(userRepository: UserRepository):
 
         elif tela_atual == "login":
             pygame.draw.rect(
-                window, YELLOW, (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT - 160, 200, 40)
+                SCREEN, YELLOW, (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT - 160, 200, 40)
             )
 
             exibir_mensagem("RA: " + login_user_dict["ra"], BLACK, -60)
@@ -286,21 +279,21 @@ def user_screen(userRepository: UserRepository):
 
             if campo_selecionado == FieldEnum.RA:
                 pygame.draw.rect(
-                    window,
+                    SCREEN,
                     YELLOW,
                     (SCREEN_WIDTH // 2 - 150, SCREEN_HEIGHT // 2 - 75, 300, 40),
                     2,
                 )
             elif campo_selecionado == FieldEnum.SENHA:
                 pygame.draw.rect(
-                    window,
+                    SCREEN,
                     YELLOW,
                     (SCREEN_WIDTH // 2 - 150, SCREEN_HEIGHT // 2 - 20, 300, 40),
                     2,
                 )
 
             pygame.draw.rect(
-                window, YELLOW, (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT - 100, 200, 40)
+                SCREEN, YELLOW, (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT - 100, 200, 40)
             )
             exibir_mensagem("LOGIN", BLACK, 260)
 
@@ -313,7 +306,7 @@ def user_screen(userRepository: UserRepository):
                 <= SCREEN_HEIGHT - 60
             ):
                 pygame.draw.rect(
-                    window,
+                    SCREEN,
                     BLACK,
                     (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT - 100, 200, 40),
                     2,
@@ -321,15 +314,17 @@ def user_screen(userRepository: UserRepository):
                 tela_atual = "inicio"
 
             if pygame.mouse.get_pressed()[0]:
+                print(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
                 if (
                     SCREEN_WIDTH // 2 - 100
                     <= pygame.mouse.get_pos()[0]
                     <= SCREEN_WIDTH // 2 + 100
-                    and SCREEN_HEIGHT - 100
+                    and SCREEN_HEIGHT - 200
                     <= pygame.mouse.get_pos()[1]
-                    <= SCREEN_HEIGHT - 60
+                    <= SCREEN_HEIGHT - 100
                 ):
                     if login(login_user_dict, userRepository):
+                        print('deu certo')
                         exibir_mensagem("Login bem-sucedido", BLACK, 160)
                     else:
                         exibir_mensagem("Login falhou", BLACK, 160)

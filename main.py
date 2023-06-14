@@ -15,8 +15,5 @@ def main():
         test_user = UserRepository(session)
         user_screen(test_user)
 
-       
-
-
 if __name__ == "__main__":
     main()
